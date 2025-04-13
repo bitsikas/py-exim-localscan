@@ -686,7 +686,6 @@ int local_scan(int fd, uschar **return_text)
                 *return_text = (uschar *)"Internal error";
                 log_write(0, LOG_PANIC, "Couldn't import Python 'sys' module");
                 log_write(0, LOG_PANIC, "%s", getPythonTraceback());
-		        Py_Finalize();
                 return python_failure_return;
                 }
 
@@ -698,7 +697,6 @@ int local_scan(int fd, uschar **return_text)
                 *return_text = (uschar *)"Internal error";
                 log_write(0, LOG_PANIC, "expy: Python sys.path doesn't exist or isn't a list");
                 log_write(0, LOG_PANIC, "%s", getPythonTraceback());
-		        Py_Finalize();
                 return python_failure_return;
                 }
 
@@ -707,7 +705,6 @@ int local_scan(int fd, uschar **return_text)
                 {
                 PyErr_Clear();
                 log_write(0, LOG_PANIC, "expy: Failed to create Python string from [%s]", expy_path_add);
-		        Py_Finalize();
                 return python_failure_return;
                 }
 
@@ -729,7 +726,6 @@ int local_scan(int fd, uschar **return_text)
             PyErr_Clear();
             *return_text = (uschar *)"Internal error";
             log_write(0, LOG_PANIC, "Couldn't import Python '%s' module", expy_scan_module);
-		    Py_Finalize();
             return python_failure_return;
             }
         }
@@ -742,7 +738,6 @@ int local_scan(int fd, uschar **return_text)
         PyErr_Clear();
         *return_text = (uschar *)"Internal error";
         log_write(0, LOG_PANIC, "Python %s module doesn't have a %s function", expy_scan_module, expy_scan_function);
-		Py_Finalize();
         return python_failure_return;
         }
 
