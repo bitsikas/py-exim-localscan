@@ -802,7 +802,6 @@ int local_scan(int fd, uschar **return_text)
         Py_DECREF(original_recipients);
         clear_headers(exim_headers);
         Py_DECREF(exim_headers);
-		Py_Finalize();
         return python_failure_return;
         }
 
@@ -875,7 +874,7 @@ int local_scan(int fd, uschar **return_text)
         {
         int rc = PyInt_AsLong(result);
         Py_DECREF(result);
-		Py_Finalize();
+		PyGC_Collect();
         return rc;
         }
 
@@ -883,7 +882,7 @@ int local_scan(int fd, uschar **return_text)
     Py_DECREF(result);
     *return_text = (uschar *)"Internal error";
     log_write(0, LOG_PANIC, "Python %s.%s function didn't return integer", expy_scan_module, expy_scan_function);
-    Py_Finalize();
+    PyGC_Collect();
     return python_failure_return;
     }
 
